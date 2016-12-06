@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+
+    <title>Webtp3 by JHilleri</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>Webtp3</h1>
+        <h2></h2>
+
+        <section id="downloads">
+          <a href="https://github.com/JHilleri/webTp3/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/JHilleri/webTp3/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/JHilleri/webTp3" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <p><img src="socketio.png" alt="socket.io background"></p>
+
+<h1>
+<a id="introduction" class="anchor" href="#introduction" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Introduction</h1>
+
+<p>Socket.io est une bibliothèque pour gérer des communication temps-réel entre un serveur node.js et des clients web ( ou C++ ).</p>
+
+<p>Cette bibliothèque fouit plusieurs fonctionnalités intéressantes :</p>
+
+<ul>
+<li>compatibilité avec les différent navigateur, socket.io utilise des web-socket quand le navigateur le supporte mais peut utiliser d'autres technologies pour assurer la compatibilité avec les vieux navigateurs.</li>
+<li>programmation événementielle.</li>
+<li>transmission de données json ou binaire.</li>
+<li>compression des données.</li>
+</ul>
+
+<h1>
+<a id="utilisation" class="anchor" href="#utilisation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Utilisation</h1>
+
+<h2>
+<a id="coté-serveur" class="anchor" href="#cot%C3%A9-serveur" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Coté serveur</h2>
+
+<h3>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h3>
+
+<p>Sur le serveur node.js l'installation ce fait simplement avec le gestionnaire de packages npm.</p>
+
+<pre><code>npm install socket.io
+</code></pre>
+
+<h3>
+<a id="charger-la-bibliothèque" class="anchor" href="#charger-la-biblioth%C3%A8que" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>charger la bibliothèque</h3>
+
+<p>Pour charger socket.io sur le serveur il suffit d'utiliser la fonction require.</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> io <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>socket.io<span class="pl-pds">'</span></span>)();</pre></div>
+
+<h3>
+<a id="gestion-des-connexions" class="anchor" href="#gestion-des-connexions" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>gestion des connexions</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">io</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>connection<span class="pl-pds">'</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">socket</span>){
+<span class="pl-c">// code a exécuter lors des connexions</span>
+});</pre></div>
+
+<h3>
+<a id="gestion-des-évènements" class="anchor" href="#gestion-des-%C3%A9v%C3%A8nements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>gestion des évènements</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">socket</span>.<span class="pl-en">on</span>($nomEvenement, <span class="pl-k">function</span> () {
+<span class="pl-c">//traitement de l'évènement</span>
+});</pre></div>
+
+<p>Généralement les évènement sont définit lors de la connexion du client.</p>
+
+<h3>
+<a id="écouter-les-connexion" class="anchor" href="#%C3%A9couter-les-connexion" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>écouter les connexion</h3>
+
+<p>Pour écouter les connexions sur le port $port il faut utiliser la méthode listen.</p>
+
+<ul>
+<li>pour une utilisation de socket.io seul</li>
+</ul>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> io <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>socket.io<span class="pl-pds">'</span></span>)();
+<span class="pl-c">// ...</span>
+<span class="pl-smi">io</span>.<span class="pl-en">listen</span>($port);</pre></div>
+
+<ul>
+<li>pour une utilisation de socket.io avec express</li>
+</ul>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> app <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>express<span class="pl-pds">'</span></span>)();
+<span class="pl-k">var</span> server <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>http<span class="pl-pds">'</span></span>).<span class="pl-en">createServer</span>(app);
+<span class="pl-k">var</span> io <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>socket.io<span class="pl-pds">'</span></span>)(server);
+<span class="pl-c">// ...</span>
+<span class="pl-smi">server</span>.<span class="pl-en">listen</span>($port, $ip)</pre></div>
+
+<p>Les ports et addresses IP de l'hébergeur peuvent être récupéré avec process.env.PORT et process.env.IP.</p>
+
+<h3>
+<a id="envoyer-un-évènement" class="anchor" href="#envoyer-un-%C3%A9v%C3%A8nement" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>envoyer un évènement</h3>
+
+<p>Les évènements sont utilisé pour communiquer entre le serveur et les clients, les évènements sont identifié par des noms et transmettent des objets.</p>
+
+<ul>
+<li>envoyer a tout les clients connectés</li>
+</ul>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">io</span>.<span class="pl-en">emit</span>($nomEvenement, $objetAEnvoyer);</pre></div>
+
+<ul>
+<li>envoyer a un client</li>
+</ul>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">socket</span>.<span class="pl-en">emit</span>($nomEvenement, $objetAEnvoyer);</pre></div>
+
+<h2>
+<a id="client-web" class="anchor" href="#client-web" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>client web</h2>
+
+<h3>
+<a id="chargement-du-scripte" class="anchor" href="#chargement-du-scripte" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Chargement du scripte</h3>
+
+<p>Pour utiliser socket.io coté client il suffit de charger dans la page le script fournit automatiquement par le module coté serveur.</p>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>/socket.io/socket.io.js<span class="pl-pds">"</span></span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;</pre></div>
+
+<h3>
+<a id="creation-dun-socket" class="anchor" href="#creation-dun-socket" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>creation d'un socket</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> socket <span class="pl-k">=</span> <span class="pl-en">io</span>();</pre></div>
+
+<h3>
+<a id="gestion-des-évènements-1" class="anchor" href="#gestion-des-%C3%A9v%C3%A8nements-1" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>gestion des évènements</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">socket</span>.<span class="pl-en">on</span>($nomEvenement, <span class="pl-k">function</span>(<span class="pl-smi">objetRecut</span>){
+<span class="pl-c">// traitement de l'evenement </span>
+};</pre></div>
+
+<h3>
+<a id="émission-dévènements" class="anchor" href="#%C3%A9mission-d%C3%A9v%C3%A8nements" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>émission d'évènements</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-smi">socket</span>.<span class="pl-en">emit</span>($nomEvenement, $objetAEnvoyer);</pre></div>
+
+<h1>
+<a id="exemples" class="anchor" href="#exemples" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Exemples</h1>
+
+<h2>
+<a id="un-chat-avec-socketio" class="anchor" href="#un-chat-avec-socketio" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Un chat avec socket.io</h2>
+
+<p>Pour cet exemple on vas utiliser socket.io avec le framework express.</p>
+
+<h3>
+<a id="1-installation-des-packages" class="anchor" href="#1-installation-des-packages" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>1. installation des packages</h3>
+
+<pre><code>npm install express
+npm install socket.io
+</code></pre>
+
+<h3>
+<a id="2-code-serveur" class="anchor" href="#2-code-serveur" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>2. code serveur</h3>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> express <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>express<span class="pl-pds">'</span></span>);
+<span class="pl-k">var</span> app <span class="pl-k">=</span> <span class="pl-en">express</span>();
+<span class="pl-k">var</span> http <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>http<span class="pl-pds">'</span></span>).<span class="pl-en">Server</span>(app);
+<span class="pl-k">var</span> io <span class="pl-k">=</span> <span class="pl-c1">require</span>(<span class="pl-s"><span class="pl-pds">'</span>socket.io<span class="pl-pds">'</span></span>)(http);
+
+<span class="pl-smi">app</span>.<span class="pl-en">use</span>(<span class="pl-smi">express</span>.<span class="pl-en">static</span>(<span class="pl-c1">__dirname</span> <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">'</span>/www/<span class="pl-pds">'</span></span>));
+
+<span class="pl-smi">http</span>.<span class="pl-en">listen</span>(<span class="pl-c1">process</span>.<span class="pl-smi">env</span>.<span class="pl-c1">PORT</span> <span class="pl-k">||</span> <span class="pl-c1">3000</span>, <span class="pl-c1">process</span>.<span class="pl-smi">env</span>.<span class="pl-c1">IP</span> <span class="pl-k">||</span> <span class="pl-s"><span class="pl-pds">"</span>0.0.0.0<span class="pl-pds">"</span></span>, <span class="pl-k">function</span> () {
+  <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>listening<span class="pl-pds">'</span></span>);
+});
+
+<span class="pl-smi">io</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>connection<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">socket</span>) {
+  <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>a user connected<span class="pl-pds">'</span></span>);
+  <span class="pl-smi">socket</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">'</span>disconnect<span class="pl-pds">'</span></span>, <span class="pl-k">function</span> () {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(<span class="pl-s"><span class="pl-pds">'</span>user disconnected<span class="pl-pds">'</span></span>);
+  });
+
+  <span class="pl-smi">socket</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span>, <span class="pl-k">function</span> (<span class="pl-smi">message</span>) {
+    <span class="pl-k">if</span> (<span class="pl-smi">message</span>.<span class="pl-c1">text</span> <span class="pl-k">!==</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>) {
+      <span class="pl-smi">io</span>.<span class="pl-en">emit</span>(<span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span>, message);
+      <span class="pl-en">console</span>.<span class="pl-c1">log</span>(message);
+    }
+  });
+});</pre></div>
+
+<h3>
+<a id="3-code-client" class="anchor" href="#3-code-client" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>3. code client</h3>
+
+<ul>
+<li>index.html</li>
+</ul>
+
+<div class="highlight highlight-text-html-basic"><pre>&lt;!DOCTYPE html&gt;
+&lt;<span class="pl-ent">html</span>&gt;
+&lt;<span class="pl-ent">head</span>&gt;
+    &lt;<span class="pl-ent">title</span>&gt;Mon premier chat avec socket.io&lt;/<span class="pl-ent">title</span>&gt;
+    &lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>/socket.io/socket.io.js<span class="pl-pds">"</span></span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+    &lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>/js/jquery-3.1.1.js<span class="pl-pds">"</span></span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+    &lt;<span class="pl-ent">script</span> <span class="pl-e">src</span>=<span class="pl-s"><span class="pl-pds">"</span>/js/myChat.js<span class="pl-pds">"</span></span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/javascript<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">script</span>&gt;
+    &lt;<span class="pl-ent">link</span> <span class="pl-e">rel</span>=<span class="pl-s"><span class="pl-pds">"</span>stylesheet<span class="pl-pds">"</span></span> <span class="pl-e">type</span>=<span class="pl-s"><span class="pl-pds">"</span>text/css<span class="pl-pds">"</span></span> <span class="pl-e">href</span>=<span class="pl-s"><span class="pl-pds">"</span>css/style.css<span class="pl-pds">"</span></span>&gt;
+&lt;/<span class="pl-ent">head</span>&gt;
+&lt;<span class="pl-ent">body</span> <span class="pl-e">onload</span>=<span class="pl-s"><span class="pl-pds">"</span>start()<span class="pl-pds">"</span></span>&gt;
+    &lt;<span class="pl-ent">textarea</span> <span class="pl-e">readonly</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>messageOutput<span class="pl-pds">"</span></span>&gt;&lt;/<span class="pl-ent">textarea</span>&gt;
+    &lt;<span class="pl-ent">form</span> <span class="pl-e">action</span>=<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>messageForm<span class="pl-pds">"</span></span>&gt;
+        &lt;<span class="pl-ent">input</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>userPseudo<span class="pl-pds">"</span></span> <span class="pl-e">autocomplete</span>=<span class="pl-s"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>pseudo<span class="pl-pds">"</span></span>/&gt;
+        &lt;<span class="pl-ent">input</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>messageInput<span class="pl-pds">"</span></span> <span class="pl-e">autocomplete</span>=<span class="pl-s"><span class="pl-pds">"</span>off<span class="pl-pds">"</span></span> <span class="pl-e">placeholder</span>=<span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span>/&gt;
+        &lt;<span class="pl-ent">button</span> <span class="pl-e">id</span>=<span class="pl-s"><span class="pl-pds">"</span>sendMessage<span class="pl-pds">"</span></span>&gt;envoyer&lt;/<span class="pl-ent">button</span>&gt;
+    &lt;/<span class="pl-ent">form</span>&gt;
+&lt;/<span class="pl-ent">body</span>&gt;
+&lt;/<span class="pl-ent">html</span>&gt;</pre></div>
+
+<ul>
+<li>myChat.js</li>
+</ul>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">start</span>()
+{
+    <span class="pl-k">var</span> socket <span class="pl-k">=</span> <span class="pl-en">io</span>();
+
+    <span class="pl-en">$</span>(<span class="pl-s"><span class="pl-pds">"</span>#messageForm<span class="pl-pds">"</span></span>).<span class="pl-c1">submit</span>(<span class="pl-k">function</span>(){
+        <span class="pl-smi">socket</span>.<span class="pl-en">emit</span>(<span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span>, {pseudo<span class="pl-k">:</span><span class="pl-en">$</span>(<span class="pl-s"><span class="pl-pds">"</span>#userPseudo<span class="pl-pds">"</span></span>).<span class="pl-en">val</span>(),text<span class="pl-k">:</span><span class="pl-en">$</span>(<span class="pl-s"><span class="pl-pds">"</span>#messageInput<span class="pl-pds">"</span></span>).<span class="pl-en">val</span>()});
+        <span class="pl-en">$</span>(<span class="pl-s"><span class="pl-pds">"</span>#messageInput<span class="pl-pds">"</span></span>).<span class="pl-en">val</span>(<span class="pl-s"><span class="pl-pds">"</span><span class="pl-pds">"</span></span>);
+        <span class="pl-k">return</span> <span class="pl-c1">false</span>;
+    });
+
+    <span class="pl-smi">socket</span>.<span class="pl-en">on</span>(<span class="pl-s"><span class="pl-pds">"</span>message<span class="pl-pds">"</span></span>, <span class="pl-k">function</span>(<span class="pl-smi">message</span>){
+        <span class="pl-en">$</span>(<span class="pl-s"><span class="pl-pds">"</span>#messageOutput<span class="pl-pds">"</span></span>).<span class="pl-en">val</span>(<span class="pl-en">$</span>(<span class="pl-s"><span class="pl-pds">"</span>#messageOutput<span class="pl-pds">"</span></span>).<span class="pl-en">val</span>() <span class="pl-k">+</span> <span class="pl-smi">message</span>.<span class="pl-smi">pseudo</span> <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span> : <span class="pl-pds">"</span></span> <span class="pl-k">+</span> <span class="pl-smi">message</span>.<span class="pl-c1">text</span> <span class="pl-k">+</span> <span class="pl-s"><span class="pl-pds">"</span><span class="pl-cce">\n</span><span class="pl-pds">"</span></span>);
+    });
+}</pre></div>
+
+<p><img src="./exemple1.png" alt="aperçu de l'exemple"></p>
+
+<p><a href="https://github.com/JHilleri/socket.ioExemple1">sources de l'exemple</a>, 
+<a href="https://socket-io-exemple.herokuapp.com/">demonstration</a></p>
+
+<h1>
+<a id="sources" class="anchor" href="#sources" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Sources</h1>
+
+<ul>
+<li><a href="http://socket.io/">socket.io</a></li>
+<li><a href="http://atinux.developpez.com/tutoriels/javascript/debuter-avec-socket-io/">developpez.com</a></li>
+<li><a href="https://openclassrooms.com/courses/des-applications-ultra-rapides-avec-node-js">openclassrooms</a></li>
+</ul>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
